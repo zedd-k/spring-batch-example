@@ -14,5 +14,9 @@
 2) 위의 `구현 내용`을 참고하여 `PersonJob.kt` 의 주석으로 설명된 부분을 구현한다.
 3) `BatchExerciseApplication.kt` 를 실행시켜서 정상적으로 수행되면 PASS
 
+# 수행 결과 기대값
+https://user-images.githubusercontent.com/89777169/136234505-ecdf7545-c80d-4551-b9bc-be72e7f5aa4c.png
+위의 json 형태를 가진 파일이 생성되었다면 성공.
+
 # 팁
 - ItemReader/ItemWriter는 다양한 구현체가 있다. 이것을 활용한다. - [링크](https://docs.spring.io/spring-batch/docs/current/reference/html/readersAndWriters.html)
