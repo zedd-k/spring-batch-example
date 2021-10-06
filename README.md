@@ -15,7 +15,7 @@
 3) `BatchExerciseApplication.kt` 를 실행시켜서 정상적으로 수행되면 PASS
 
 # 수행 결과 기대값
-https://user-images.githubusercontent.com/89777169/136234505-ecdf7545-c80d-4551-b9bc-be72e7f5aa4c.png
+![결과](https://user-images.githubusercontent.com/89777169/136234505-ecdf7545-c80d-4551-b9bc-be72e7f5aa4c.png)
 위의 json 형태를 가진 파일이 생성되었다면 성공.
 
 # 팁
