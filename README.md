@@ -6,7 +6,7 @@
 
 # 구현 내용
 - reader() : `/src/main/resources/sample-data.csv` 파일을 읽어서 Person 객체로 변환한다.
-- processor() : Person의 'name'이름은 소문자로 변환한다.
+- processor() : Person의 'name'의 값을 소문자로 변환한다.
 - writer() : 변환된 Person 목록을 json 형태로 변환하여 파일로 저장한다. (파일 저장 위치등은 자유)
 
 # example 프로젝트 사용방법
