@@ -19,7 +19,6 @@ class PersonJob(
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory
 ) {
-
     @Bean
     fun personProcessingJob(): Job = jobBuilderFactory.get("personProcessingJob")
         .flow(personProcessingStep())
