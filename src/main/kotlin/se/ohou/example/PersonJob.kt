@@ -12,6 +12,7 @@ import org.springframework.batch.item.json.JacksonJsonObjectMarshaller
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource
 
 @Configuration
@@ -19,8 +20,6 @@ class PersonJob(
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory
 ) {
-
-    private val RESOURCE_PATH = "${System.getProperty("user.dir")}/src/main/resources"
 
     @Bean
     fun personProcessingJob(): Job = jobBuilderFactory.get("personProcessingJob")
@@ -44,7 +43,7 @@ class PersonJob(
         // sample-data.csv 파일을 읽어서 Person 도메인 객체로 컨버팅
         return FlatFileItemReaderBuilder<Person>()
             .name("csvReader")
-            .resource(FileSystemResource("${RESOURCE_PATH}/sample-data.csv"))
+            .resource(ClassPathResource("sample-data.csv"))
             .lineMapper { line, _ ->
                 val splitLine = line.split(",")
                 Person(splitLine[0], splitLine[1].toInt())
@@ -53,6 +52,7 @@ class PersonJob(
 
     @Bean
     fun processor(): ItemProcessor<Person, Person> {
+        // Person 객체안에 name을 모두 소문자로 변환
         return ItemProcessor {
             Person(it.name.lowercase(), it.age)
         }
@@ -63,8 +63,8 @@ class PersonJob(
         // Person 객체를 json 파일로 write (파일 위치는 상관없음)
         return JsonFileItemWriterBuilder<Person>()
             .name("jsonWriter")
-            .jsonObjectMarshaller(JacksonJsonObjectMarshaller<Person>())
-            .resource(FileSystemResource("${RESOURCE_PATH}/sample-data.json"))
+            .jsonObjectMarshaller(JacksonJsonObjectMarshaller())
+            .resource(FileSystemResource("${System.getProperty("user.dir")}/src/main/resources/sample-data.json"))
             .build()
     }
 }
