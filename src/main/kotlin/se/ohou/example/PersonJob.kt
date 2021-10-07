@@ -13,7 +13,6 @@ import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.FileSystemResource
 
 @Configuration
 class PersonJob(
@@ -46,7 +45,7 @@ class PersonJob(
             .resource(ClassPathResource("sample-data.csv"))
             .lineMapper { line, _ ->
                 val splitLine = line.split(",")
-                Person(splitLine[0], splitLine[1].toInt())
+                Person(splitLine.getOrNull(0) ?: "", splitLine.getOrNull(1)?.toInt() ?: 0)
             }.build()
     }
 
@@ -64,7 +63,7 @@ class PersonJob(
         return JsonFileItemWriterBuilder<Person>()
             .name("jsonWriter")
             .jsonObjectMarshaller(JacksonJsonObjectMarshaller())
-            .resource(FileSystemResource("${System.getProperty("user.dir")}/src/main/resources/sample-data.json"))
+            .resource(ClassPathResource("sample-data.json"))
             .build()
     }
 }
