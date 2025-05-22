@@ -8,6 +8,7 @@ import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller
 import org.springframework.batch.item.json.JsonFileItemWriter
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder
@@ -23,6 +24,7 @@ class PersonJob(
     @Bean
     fun personProcessingJob(): Job = jobBuilderFactory.get("personProcessingJob")
         .flow(personProcessingStep())
+        .next(txtPersonProcessingStep())
         .end()
         .build()
 
@@ -31,6 +33,19 @@ class PersonJob(
         // reader, processor, writer를 가진 tasklet step을 생성
         return stepBuilderFactory.get("personProcessingStep")
             .chunk<Person, Person>(1)
+            // .reader(reader()) TODO: Implement reader
+            // .processor(processor()) TODO: Implement processor
+            // .writer(writer()) TODO: Implement writer
+            .build()
+    }
+
+    @Bean
+    fun txtPersonProcessingStep(): Step {
+        return stepBuilderFactory.get("txtPersonProcessingStep")
+            .chunk<Person, Person>(1)
+            // .reader(txtReader()) TODO: Implement txtReader
+            // .processor(processor()) TODO: Implement processor
+            // .writer(writer()) TODO: Implement writer
             .build()
     }
 
@@ -51,5 +66,20 @@ class PersonJob(
     fun writer(): ItemWriter<Person>? {
         // Person 객체를 json 파일로 write (파일 위치는 상관없음)
         return null
+    }
+
+    @Bean
+    fun txtReader(): ItemReader<Person> {
+        // sample-data.txt 파일을 읽어서 Person 도메인 객체로 컨버팅
+        return FlatFileItemReaderBuilder<Person>()
+            .name("txtPersonReader")
+            .resource(ClassPathResource("sample-data.txt"))
+            .linesToSkip(1) // Skip header
+            .delimited().delimiter("|")
+            .names("id", "name", "age", "region")
+            .fieldSetMapper(BeanWrapperFieldSetMapper<Person>().apply {
+                setTargetType(Person::class.java)
+            })
+            .build()
     }
 }

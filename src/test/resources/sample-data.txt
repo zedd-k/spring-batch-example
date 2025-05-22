@@ -1,0 +1,7 @@
+id|name|age|region
+1|John|20|USA
+2|Jane|21|USA
+3|Peter|22|UK
+4|Mary|23|UK
+5|David|24|KOREA
+6|Alice|25|KOREA
